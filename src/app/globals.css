@@ -1,42 +1,531 @@
+/* IDE Portfolio - Global Styles */
+/* VS Code Dark+ Inspired Theme */
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Editor Colors (VS Code Dark+) */
+  --editor-bg: #1e1e1e;
+  --sidebar-bg: #252526;
+  --tab-bar-bg: #2d2d30;
+  --tab-active-bg: #1e1e1e;
+  --tab-inactive-bg: #2d2d30;
+  --status-bar-bg: #007acc;
+  --terminal-bg: #1e1e1e;
+  --gutter-bg: #1e1e1e;
+
+  /* Border Colors */
+  --border-color: #3e3e42;
+  --divider-color: #252526;
+
+  /* Text Colors */
+  --text-default: #d4d4d4;
+  --text-muted: #858585;
+  --line-number: #858585;
+  --text-bright: #ffffff;
+
+  /* Syntax Highlighting Colors */
+  --keyword: #569cd6;
+  /* blue - keywords */
+  --string: #ce9178;
+  /* orange - strings */
+  --comment: #6a9955;
+  /* green - comments */
+  --function: #dcdcaa;
+  /* yellow - functions */
+  --variable: #9cdcfe;
+  /* light blue - variables */
+  --number: #b5cea8;
+  /* light green - numbers */
+  --type: #4ec9b0;
+  /* cyan - types */
+  --property: #9cdcfe;
+  /* light blue - properties */
+
+  /* UI Accent Colors */
+  --accent-blue: #007acc;
+  --accent-hover: #094771;
+  --accent-active: #0e639c;
+  --error-red: #f48771;
+  --warning-yellow: #cca700;
+  --success-green: #89d185;
+
+  /* File Icon Colors */
+  --icon-markdown: #519aba;
+  --icon-json: #cbcb41;
+  --icon-typescript: #3178c6;
+  --icon-python: #3776ab;
+  --icon-yaml: #cb171e;
+  --icon-folder: #dcb67a;
+
+  /* Fonts */
+  --font-mono: 'Fira Code', 'JetBrains Mono', 'Courier New', monospace;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+
+  /* Sizes */
+  --sidebar-width: 250px;
+  --tab-height: 35px;
+  --status-bar-height: 22px;
+  --terminal-height: 200px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html,
 body {
-  max-width: 100vw;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--font-sans);
+  background: var(--editor-bg);
+  color: var(--text-default);
+  font-size: 13px;
+}
+
+/* IDE Layout */
+.ide-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+.ide-main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: var(--space-md);
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.file-tree {
+  flex: 1;
+  overflow-y: auto;
   overflow-x: hidden;
+  padding: var(--space-sm) 0;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* File Tree Items */
+.file-item,
+.folder-item {
+  display: flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-md);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  user-select: none;
+  font-family: var(--font-sans);
+  font-size: 13px;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+.file-item:hover,
+.folder-item:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
-a {
-  color: inherit;
+.file-item.active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.folder-item {
+  font-weight: 500;
+}
+
+.file-icon,
+.folder-icon {
+  margin-right: var(--space-sm);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.folder-children {
+  padding-left: var(--space-lg);
+}
+
+/* Tab Bar */
+.tab-bar {
+  background: var(--tab-bar-bg);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  height: var(--tab-height);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-md);
+  background: var(--tab-inactive-bg);
+  border-right: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  min-width: 120px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tab.active {
+  background: var(--tab-active-bg);
+  color: var(--text-default);
+  border-bottom: 2px solid var(--accent-blue);
+}
+
+.tab-icon {
+  margin-right: var(--space-sm);
+  font-size: 14px;
+}
+
+.tab-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab-close {
+  margin-left: var(--space-sm);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  padding: 2px;
+  border-radius: 3px;
+}
+
+.tab:hover .tab-close {
+  opacity: 0.7;
+}
+
+.tab-close:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Editor */
+.editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--editor-bg);
+}
+
+.editor-content {
+  flex: 1;
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  padding: var(--space-md);
+}
+
+.code-line {
+  display: flex;
+  min-height: 22px;
+}
+
+.line-number {
+  color: var(--line-number);
+  text-align: right;
+  padding-right: var(--space-md);
+  user-select: none;
+  min-width: 40px;
+  font-size: 13px;
+}
+
+.line-content {
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Syntax Highlighting */
+.token-keyword {
+  color: var(--keyword);
+  font-weight: 500;
+}
+
+.token-string {
+  color: var(--string);
+}
+
+.token-comment {
+  color: var(--comment);
+  font-style: italic;
+}
+
+.token-function {
+  color: var(--function);
+}
+
+.token-variable {
+  color: var(--variable);
+}
+
+.token-number {
+  color: var(--number);
+}
+
+.token-type {
+  color: var(--type);
+}
+
+.token-property {
+  color: var(--property);
+}
+
+.token-operator {
+  color: var(--text-default);
+}
+
+.token-punctuation {
+  color: var(--text-muted);
+}
+
+/* Terminal */
+.terminal {
+  background: var(--terminal-bg);
+  border-top: 1px solid var(--border-color);
+  height: var(--terminal-height);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--tab-bar-bg);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.terminal-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md);
+}
+
+.terminal-line {
+  margin-bottom: var(--space-xs);
+  display: flex;
+}
+
+.terminal-prompt {
+  color: var(--success-green);
+  margin-right: var(--space-sm);
+}
+
+.terminal-input {
+  background: transparent;
+  border: none;
+  color: var(--text-default);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  flex: 1;
+  outline: none;
+}
+
+.terminal-output {
+  color: var(--text-default);
+  white-space: pre-wrap;
+  margin-left: calc(var(--space-sm) * 4);
+}
+
+.terminal-error {
+  color: var(--error-red);
+}
+
+/* Status Bar */
+.status-bar {
+  background: var(--status-bar-bg);
+  height: var(--status-bar-height);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-md);
+  font-size: 12px;
+  color: white;
+  justify-content: space-between;
+}
+
+.status-left,
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--editor-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #424242;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4e4e4e;
+}
+
+/* Markdown Rendering in Editor */
+.markdown-content h1 {
+  font-size: 2em;
+  font-weight: 700;
+  margin: var(--space-lg) 0;
+  color: var(--text-bright);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: var(--space-sm);
+}
+
+.markdown-content h2 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: var(--space-md) 0;
+  color: var(--text-bright);
+}
+
+.markdown-content h3 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin: var(--space-md) 0;
+  color: var(--text-bright);
+}
+
+.markdown-content p {
+  margin: var(--space-md) 0;
+  line-height: 1.6;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin: var(--space-md) 0;
+  padding-left: var(--space-xl);
+}
+
+.markdown-content li {
+  margin: var(--space-sm) 0;
+}
+
+.markdown-content code {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--string);
+}
+
+.markdown-content a {
+  color: var(--accent-blue);
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+.markdown-content a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 200px;
+    --terminal-height: 150px;
   }
+
+  .sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform var(--transition-base);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease;
 }

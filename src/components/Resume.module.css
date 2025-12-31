@@ -1,0 +1,70 @@
+.section {
+    padding: 6rem 1.5rem;
+}
+
+.heading {
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: hsl(var(--foreground));
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    max-width: 800px;
+}
+
+.item {
+    border-left: 2px solid hsl(var(--border));
+    padding-left: 2rem;
+    position: relative;
+    transition: border-color 0.2s;
+}
+
+.item:hover {
+    border-color: hsl(var(--primary));
+}
+
+.item::before {
+    content: '';
+    position: absolute;
+    left: -9px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: hsl(var(--background));
+    border: 2px solid hsl(var(--border));
+    transition: border-color 0.2s;
+}
+
+.item:hover::before {
+    border-color: hsl(var(--primary));
+    background: hsl(var(--primary));
+}
+
+.header {
+    margin-bottom: 0.5rem;
+}
+
+.role {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.company {
+    font-weight: 500;
+    color: hsl(var(--primary));
+    margin-right: 1rem;
+}
+
+.period {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.9rem;
+}
+
+.description {
+    color: hsl(var(--muted-foreground));
+    line-height: 1.7;
+}
