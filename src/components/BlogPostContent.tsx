@@ -1,7 +1,7 @@
 'use client';
 
+import Header from '@/components/Header';
 import { motion } from 'framer-motion';
-import { fadeInUp, staggerContainer } from '@/utils/animations';
 import { getBlogPost } from '@/data/blog-posts';
 import Link from 'next/link';
 
@@ -17,119 +17,100 @@ export default function BlogPostContent({ slug }: BlogPostContentProps) {
     }
 
     return (
-        <main style={{
-            minHeight: '100vh',
-            paddingTop: 'var(--space-3xl)',
-            paddingBottom: 'var(--space-3xl)'
-        }}>
-            <article className="container container-narrow">
-                <motion.div
-                    variants={staggerContainer}
-                    initial="initial"
-                    animate="animate"
-                >
-                    {/* Back link */}
-                    <motion.div variants={fadeInUp}>
-                        <Link
-                            href="/blog"
-                            style={{
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '0.5rem',
-                                marginBottom: 'var(--space-lg)',
-                                color: 'var(--color-accent-primary)',
-                                fontSize: 'var(--font-size-sm)',
-                                fontWeight: 600
-                            }}
-                        >
-                            ← Back to All Articles
-                        </Link>
-                    </motion.div>
-
-                    {/* Article Header */}
+        <>
+            <Header />
+            <main style={{ paddingTop: 'var(--space-32)', paddingBottom: 'var(--space-24)' }}>
+                <article className="container container-narrow">
                     <motion.div
-                        variants={fadeInUp}
-                        style={{ marginBottom: 'var(--space-2xl)' }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6 }}
                     >
+                        {/* Back link */}
+                        <Link href="/blog" className="link-arrow" style={{ marginBottom: 'var(--space-8)', display: 'inline-flex' }}>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <line x1="19" y1="12" x2="5" y2="12" />
+                                <polyline points="12 19 5 12 12 5" />
+                            </svg>
+                            <span>Back to articles</span>
+                        </Link>
+
+                        {/* Tags */}
                         <div style={{
                             display: 'flex',
-                            gap: '0.5rem',
-                            marginBottom: 'var(--space-md)',
-                            flexWrap: 'wrap'
+                            gap: 'var(--space-2)',
+                            marginBottom: 'var(--space-6)',
+                            flexWrap: 'wrap',
                         }}>
-                            {post.tags.map((tag, idx) => (
-                                <span key={idx} className="badge">{tag}</span>
+                            {post.tags.map((tag) => (
+                                <span key={tag} className="badge">{tag}</span>
                             ))}
                         </div>
 
+                        {/* Title */}
                         <h1 style={{
-                            fontSize: 'var(--font-size-4xl)',
+                            fontSize: 'clamp(2rem, 5vw, 3rem)',
                             fontWeight: 800,
                             lineHeight: 1.2,
-                            marginBottom: 'var(--space-md)',
-                            background: 'linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-text-secondary) 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text'
+                            marginBottom: 'var(--space-6)',
+                            letterSpacing: '-0.03em',
                         }}>
                             {post.title}
                         </h1>
 
+                        {/* Meta */}
                         <div style={{
                             display: 'flex',
-                            gap: 'var(--space-lg)',
-                            fontSize: 'var(--font-size-sm)',
+                            gap: 'var(--space-4)',
+                            fontSize: 'var(--text-sm)',
                             color: 'var(--color-text-muted)',
-                            fontFamily: 'var(--font-family-mono)'
+                            marginBottom: 'var(--space-12)',
                         }}>
                             <span>{new Date(post.date).toLocaleDateString('en-US', {
                                 month: 'long',
                                 day: 'numeric',
-                                year: 'numeric'
+                                year: 'numeric',
                             })}</span>
                             <span>·</span>
-                            <span>{post.readTime} read</span>
+                            <span>{post.readTime}</span>
                         </div>
                     </motion.div>
 
-                    {/* Article Content */}
+                    {/* Content */}
                     <motion.div
-                        variants={fadeInUp}
-                        className="card card-elevated"
-                        style={{ padding: 'var(--space-2xl)' }}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2, duration: 0.6 }}
+                        className="card"
+                        style={{ padding: 'var(--space-10)' }}
                     >
-                        <div style={{
-                            fontSize: 'var(--font-size-base)',
-                            lineHeight: 1.8,
-                            color: 'var(--color-text-secondary)'
-                        }}
-                            className="blog-content"
+                        <div
+                            style={{
+                                fontSize: 'var(--text-base)',
+                                lineHeight: 1.8,
+                                color: 'var(--color-text-secondary)',
+                            }}
                             dangerouslySetInnerHTML={{
                                 __html: post.content
                                     .split('\n')
                                     .map(line => {
-                                        // Convert markdown-style headers to HTML
                                         if (line.startsWith('## ')) {
-                                            return `<h2 style="font-size: var(--font-size-2xl); font-weight: 700; color: var(--color-text-primary); margin: var(--space-xl) 0 var(--space-md) 0;">${line.substring(3)}</h2>`;
+                                            return `<h2 style="font-size: var(--text-2xl); font-weight: 700; color: var(--color-text-primary); margin: var(--space-10) 0 var(--space-4) 0;">${line.substring(3)}</h2>`;
                                         }
                                         if (line.startsWith('# ')) {
-                                            return `<h1 style="font-size: var(--font-size-3xl); font-weight: 800; color: var(--color-text-primary); margin: var(--space-2xl) 0 var(--space-lg) 0;">${line.substring(2)}</h1>`;
+                                            return `<h1 style="font-size: var(--text-3xl); font-weight: 800; color: var(--color-text-primary); margin: var(--space-12) 0 var(--space-6) 0;">${line.substring(2)}</h1>`;
                                         }
-                                        // Convert markdown bold to HTML
-                                        if (line.startsWith('**')) {
-                                            return `<p style="font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--space-sm);">${line.replace(/\*\*/g, '')}</p>`;
+                                        if (line.startsWith('**') && line.endsWith('**')) {
+                                            return `<p style="font-weight: 600; color: var(--color-text-primary); margin-bottom: var(--space-2);">${line.replace(/\*\*/g, '')}</p>`;
                                         }
-                                        // Convert numbered lists
                                         if (line.match(/^\d+\./)) {
-                                            return `<li style="margin-bottom: var(--space-xs);">${line.substring(line.indexOf('.') + 2)}</li>`;
+                                            return `<li style="margin-bottom: var(--space-2); margin-left: var(--space-6);">${line.substring(line.indexOf('.') + 2)}</li>`;
                                         }
-                                        // Convert bullet lists
                                         if (line.startsWith('- ')) {
-                                            return `<li style="margin-bottom: var(--space-xs);">${line.substring(2)}</li>`;
+                                            return `<li style="margin-bottom: var(--space-2); margin-left: var(--space-6);">${line.substring(2)}</li>`;
                                         }
-                                        // Regular paragraph
                                         if (line.trim()) {
-                                            return `<p style="margin-bottom: var(--space-md);">${line}</p>`;
+                                            return `<p style="margin-bottom: var(--space-4);">${line}</p>`;
                                         }
                                         return '';
                                     })
@@ -138,20 +119,22 @@ export default function BlogPostContent({ slug }: BlogPostContentProps) {
                         />
                     </motion.div>
 
-                    {/* Back to blog link */}
+                    {/* Back to blog */}
                     <motion.div
-                        variants={fadeInUp}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4, duration: 0.5 }}
                         style={{
-                            marginTop: 'var(--space-2xl)',
-                            textAlign: 'center'
+                            marginTop: 'var(--space-12)',
+                            textAlign: 'center',
                         }}
                     >
                         <Link href="/blog" className="btn btn-secondary">
                             ← View All Articles
                         </Link>
                     </motion.div>
-                </motion.div>
-            </article>
-        </main>
+                </article>
+            </main>
+        </>
     );
 }

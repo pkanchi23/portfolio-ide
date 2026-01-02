@@ -1,7 +1,7 @@
 'use client';
 
+import Header from '@/components/Header';
 import { motion } from 'framer-motion';
-import { fadeInUp, staggerContainer } from '@/utils/animations';
 import { getAllBlogPosts } from '@/data/blog-posts';
 import Link from 'next/link';
 
@@ -9,150 +9,125 @@ export default function BlogPage() {
     const posts = getAllBlogPosts();
 
     return (
-        <main style={{
-            minHeight: '100vh',
-            paddingTop: 'var(--space-3xl)'
-        }}>
-            {/* Header */}
-            <section className="section">
-                <div className="container container-narrow">
-                    <motion.div
-                        variants={staggerContainer}
-                        initial="initial"
-                        animate="animate"
-                    >
-                        <motion.div variants={fadeInUp}>
-                            <Link
-                                href="/"
-                                style={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    gap: '0.5rem',
-                                    marginBottom: 'var(--space-lg)',
-                                    color: 'var(--color-accent-primary)',
-                                    fontSize: 'var(--font-size-sm)',
-                                    fontWeight: 600
-                                }}
-                            >
-                                ← Back to Portfolio
+        <>
+            <Header />
+            <main style={{ paddingTop: 'var(--space-32)' }}>
+                {/* Hero */}
+                <section className="section">
+                    <div className="container container-narrow">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <Link href="/" className="link-arrow" style={{ marginBottom: 'var(--space-6)', display: 'inline-flex' }}>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <line x1="19" y1="12" x2="5" y2="12" />
+                                    <polyline points="12 19 5 12 12 5" />
+                                </svg>
+                                <span>Back home</span>
                             </Link>
-                        </motion.div>
 
-                        <motion.div variants={fadeInUp}>
-                            <p className="section-title">Industry Analysis</p>
-                            <h1 className="section-heading">Research Notes</h1>
-                            <p style={{
-                                fontSize: 'var(--font-size-lg)',
-                                color: 'var(--color-text-secondary)',
-                                marginBottom: 'var(--space-2xl)',
-                                maxWidth: '700px'
+                            <h1 style={{
+                                fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                                fontWeight: 800,
+                                marginBottom: 'var(--space-6)',
+                                letterSpacing: '-0.03em',
                             }}>
-                                Insights on investment banking, technology trends, corporate finance, and machine learning
-                                from my work at Goldman Sachs, Guggenheim Partners, and beyond.
+                                Articles
+                            </h1>
+
+                            <p style={{
+                                fontSize: 'var(--text-xl)',
+                                color: 'var(--color-text-secondary)',
+                                lineHeight: 1.7,
+                            }}>
+                                Insights on investment banking, technology trends, and machine learning.
                             </p>
                         </motion.div>
-                    </motion.div>
-                </div>
-            </section>
+                    </div>
+                </section>
 
-            {/* Blog Posts Grid */}
-            <section className="section" style={{ paddingTop: 0 }}>
-                <div className="container container-narrow">
-                    <motion.div
-                        variants={staggerContainer}
-                        initial="initial"
-                        animate="animate"
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 'var(--space-xl)'
-                        }}
-                    >
-                        {posts.map((post, idx) => (
-                            <motion.div
-                                key={idx}
-                                variants={fadeInUp}
-                            >
-                                <Link href={`/blog/${post.slug}`} style={{ textDecoration: 'none' }}>
-                                    <div
-                                        className="card card-elevated"
-                                        style={{ cursor: 'pointer' }}
-                                    >
-                                        {/* Date and read time */}
-                                        <div style={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            marginBottom: 'var(--space-md)',
-                                            fontSize: 'var(--font-size-xs)',
-                                            color: 'var(--color-text-muted)',
-                                            fontFamily: 'var(--font-family-mono)'
-                                        }}>
-                                            <span>{new Date(post.date).toLocaleDateString('en-US', {
-                                                month: 'long',
-                                                day: 'numeric',
-                                                year: 'numeric'
-                                            })}</span>
-                                            <span>{post.readTime} read</span>
-                                        </div>
+                {/* Posts List */}
+                <section className="section" style={{ paddingTop: 0 }}>
+                    <div className="container container-narrow">
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+                            {posts.map((post, idx) => (
+                                <motion.div
+                                    key={post.slug}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: idx * 0.1, duration: 0.5 }}
+                                >
+                                    <Link href={`/blog/${post.slug}`} style={{ textDecoration: 'none' }}>
+                                        <article className="card card-interactive" style={{ padding: 'var(--space-8)' }}>
+                                            {/* Meta */}
+                                            <div style={{
+                                                display: 'flex',
+                                                gap: 'var(--space-4)',
+                                                marginBottom: 'var(--space-4)',
+                                                fontSize: 'var(--text-sm)',
+                                                color: 'var(--color-text-muted)',
+                                            }}>
+                                                <span>{new Date(post.date).toLocaleDateString('en-US', {
+                                                    month: 'long',
+                                                    day: 'numeric',
+                                                    year: 'numeric',
+                                                })}</span>
+                                                <span>·</span>
+                                                <span>{post.readTime}</span>
+                                            </div>
 
-                                        {/* Title */}
-                                        <h2 style={{
-                                            fontSize: 'var(--font-size-2xl)',
-                                            fontWeight: 700,
-                                            marginBottom: 'var(--space-sm)',
-                                            color: 'var(--color-text-primary)',
-                                            lineHeight: 1.3
-                                        }}>
-                                            {post.title}
-                                        </h2>
+                                            {/* Title */}
+                                            <h2 style={{
+                                                fontSize: 'var(--text-2xl)',
+                                                fontWeight: 700,
+                                                marginBottom: 'var(--space-3)',
+                                                color: 'var(--color-text-primary)',
+                                                lineHeight: 1.3,
+                                            }}>
+                                                {post.title}
+                                            </h2>
 
-                                        {/* Excerpt */}
-                                        <p style={{
-                                            fontSize: 'var(--font-size-base)',
-                                            color: 'var(--color-text-secondary)',
-                                            lineHeight: 1.7,
-                                            marginBottom: 'var(--space-md)'
-                                        }}>
-                                            {post.excerpt}
-                                        </p>
+                                            {/* Excerpt */}
+                                            <p style={{
+                                                fontSize: 'var(--text-base)',
+                                                color: 'var(--color-text-secondary)',
+                                                lineHeight: 1.6,
+                                                marginBottom: 'var(--space-4)',
+                                            }}>
+                                                {post.excerpt}
+                                            </p>
 
-                                        {/* Tags */}
-                                        <div style={{
-                                            display: 'flex',
-                                            flexWrap: 'wrap',
-                                            gap: '0.5rem',
-                                            marginBottom: 'var(--space-md)'
-                                        }}>
-                                            {post.tags.map((tag, tagIdx) => (
-                                                <span
-                                                    key={tagIdx}
-                                                    className="badge"
-                                                >
-                                                    {tag}
-                                                </span>
-                                            ))}
-                                        </div>
+                                            {/* Tags */}
+                                            <div style={{
+                                                display: 'flex',
+                                                flexWrap: 'wrap',
+                                                gap: 'var(--space-2)',
+                                                marginBottom: 'var(--space-4)',
+                                            }}>
+                                                {post.tags.map((tag) => (
+                                                    <span key={tag} className="badge">{tag}</span>
+                                                ))}
+                                            </div>
 
-                                        {/* Read more link */}
-                                        <div style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '0.5rem',
-                                            color: 'var(--color-accent-primary)',
-                                            fontSize: 'var(--font-size-sm)',
-                                            fontWeight: 600
-                                        }}>
-                                            Read Full Article
-                                            <span style={{ fontSize: '1rem' }}>→</span>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                </div>
-            </section>
-        </main>
+                                            {/* Read more */}
+                                            <div className="link-arrow">
+                                                <span>Read article</span>
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                                    <polyline points="12 5 19 12 12 19" />
+                                                </svg>
+                                            </div>
+                                        </article>
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </>
     );
 }
