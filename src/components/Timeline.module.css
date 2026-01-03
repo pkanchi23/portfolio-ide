@@ -1,0 +1,42 @@
+.timeline {
+  position: relative;
+  padding: var(--space-8) 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 19px; /* Align with the center of the dot */
+  height: 100%;
+  width: 2px;
+  background: var(--color-border);
+}
+
+.timelineItem {
+  position: relative;
+  padding-left: var(--space-12);
+  margin-bottom: var(--space-8);
+}
+
+.timelineDot {
+  position: absolute;
+  top: 4px;
+  left: 12px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 2px solid var(--color-bg);
+}
+
+.timelineContent {
+  cursor: pointer;
+}
+
+.timelineImage {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-4);
+}
