@@ -5,7 +5,20 @@ import Timeline from '@/components/Timeline';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
-const timelineEvents = [
+interface TimelineEvent {
+  type: 'work' | 'education';
+  company?: string;
+  school?: string;
+  role?: string;
+  degree?: string;
+  location?: string;
+  period: string;
+  description?: string;
+  image?: string;
+  gpa?: string;
+}
+
+const timelineEvents: TimelineEvent[] = [
     {
         type: 'work',
         company: 'Goldman Sachs',
