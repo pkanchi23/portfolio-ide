@@ -35,6 +35,12 @@ const cards: NavCard[] = [
         description: 'Writing on finance, technology, and ML.',
         emoji: '✍️',
     },
+    {
+        href: '/inventory',
+        title: 'Inventory',
+        description: 'A collection of my favorite wares.',
+        emoji: '💎',
+    },
 ];
 
 const containerVariants = {
