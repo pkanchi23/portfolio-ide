@@ -5,10 +5,27 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import styles from './Timeline.module.css';
 
-const Timeline = ({ events }) => {
-  const [expandedId, setExpandedId] = useState(null);
+interface TimelineEvent {
+  type: 'work' | 'education';
+  company?: string;
+  school?: string;
+  role?: string;
+  degree?: string;
+  location?: string;
+  period: string;
+  description?: string;
+  image?: string;
+  gpa?: string;
+}
 
-  const handleToggle = (id) => {
+interface TimelineProps {
+  events: TimelineEvent[];
+}
+
+const Timeline = ({ events }: TimelineProps) => {
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+
+  const handleToggle = (id: number) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
