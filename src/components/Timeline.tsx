@@ -2,13 +2,29 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 import styles from './Timeline.module.css';
 
-const Timeline = ({ events }) => {
-  const [expandedId, setExpandedId] = useState(null);
+interface TimelineEvent {
+  type: string;
+  company?: string;
+  school?: string;
+  role?: string;
+  degree?: string;
+  location?: string;
+  period: string;
+  description?: string;
+  gpa?: string;
+  image?: string;
+}
 
-  const handleToggle = (id) => {
+interface TimelineProps {
+  events: TimelineEvent[];
+}
+
+const Timeline = ({ events }: TimelineProps) => {
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+
+  const handleToggle = (id: number) => {
     setExpandedId(expandedId === id ? null : id);
   };
 
@@ -46,15 +62,6 @@ const Timeline = ({ events }) => {
                   <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', marginTop: 'var(--space-3)' }}>
                     {event.description}
                   </p>
-                  {event.image && (
-                    <Image
-                      src={event.image}
-                      alt={`${event.company || event.school} image`}
-                      width={500}
-                      height={300}
-                      className={styles.timelineImage}
-                    />
-                  )}
                 </motion.div>
               )}
             </AnimatePresence>
