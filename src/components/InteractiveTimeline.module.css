@@ -1,0 +1,331 @@
+/* InteractiveTimeline.module.css */
+
+.timelineContainer {
+  position: relative;
+  min-height: 100vh;
+  padding: var(--space-20) 0;
+  overflow: hidden;
+}
+
+/* Vignette overlays for "digging down" effect */
+.vignetteTop,
+.vignetteBottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 150px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.vignetteTop {
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.6) 40%,
+    transparent 100%
+  );
+}
+
+.vignetteBottom {
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.6) 40%,
+    transparent 100%
+  );
+}
+
+/* Progress navigation */
+.progressNav {
+  position: fixed;
+  left: var(--space-6);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  z-index: 20;
+}
+
+.progressLine {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  z-index: -1;
+  border-radius: 1px;
+}
+
+.progressDot {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-bg-tertiary);
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  padding: 0;
+}
+
+.progressDot:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: scale(1.3);
+}
+
+.progressDotActive {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 12px var(--color-accent);
+}
+
+.progressTooltip {
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}
+
+.progressDot:hover .progressTooltip {
+  opacity: 1;
+}
+
+/* Timeline content */
+.timelineContent {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  padding-left: 80px;
+}
+
+/* Timeline item */
+.timelineItem {
+  position: relative;
+  margin-bottom: var(--space-16);
+}
+
+/* Period marker */
+.periodMarker {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.periodText {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.periodLine {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    var(--color-accent),
+    transparent
+  );
+}
+
+/* Card */
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  backdrop-filter: blur(10px);
+}
+
+.card:hover {
+  border-color: var(--color-border-hover);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.cardExpanded {
+  border-color: var(--color-accent);
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.cardIcon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.cardTitleGroup {
+  flex: 1;
+}
+
+.cardTitle {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.cardSubtitle {
+  font-size: var(--text-base);
+  color: var(--color-accent);
+  font-weight: 500;
+  margin-bottom: var(--space-1);
+}
+
+.cardLocation {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.expandIcon {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  transition: transform var(--transition-base);
+}
+
+.cardDescription {
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* Expanded content */
+.cardExpansion {
+  overflow: hidden;
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+.detailsList {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-6) 0;
+}
+
+.detailsList li {
+  position: relative;
+  padding-left: var(--space-6);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.detailsList li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+}
+
+/* Image gallery */
+.imageGallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.imageWrapper {
+  position: relative;
+  aspect-ratio: 4/3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.image {
+  object-fit: cover;
+  transition: transform var(--transition-base);
+}
+
+.imageWrapper:hover .image {
+  transform: scale(1.05);
+}
+
+/* Depth connector */
+.depthConnector {
+  position: absolute;
+  left: 50%;
+  bottom: -var(--space-8);
+  width: 2px;
+  height: var(--space-8);
+  background: linear-gradient(
+    to bottom,
+    var(--color-border),
+    transparent
+  );
+  transform-origin: top;
+}
+
+/* Journey end marker */
+.journeyEnd {
+  text-align: center;
+  padding: var(--space-16) 0;
+  color: var(--color-text-muted);
+}
+
+.journeyEndIcon {
+  font-size: 3rem;
+  margin-bottom: var(--space-4);
+}
+
+.journeyEnd p {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .progressNav {
+    display: none;
+  }
+
+  .timelineContent {
+    padding-left: var(--space-6);
+  }
+
+  .vignetteTop,
+  .vignetteBottom {
+    height: 100px;
+  }
+
+  .cardHeader {
+    flex-wrap: wrap;
+  }
+
+  .cardIcon {
+    font-size: 1.5rem;
+  }
+
+  .imageGallery {
+    grid-template-columns: 1fr 1fr;
+  }
+}

@@ -1,15 +1,20 @@
 import Header from '@/components/Header';
 import HeroSection from '@/components/HeroSection';
-import NavigationCards from '@/components/NavigationCards';
+import PixelGrid from '@/components/PixelGrid';
 
 export default function Home() {
   return (
-    <>
+    <div style={{
+      height: '100vh',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      <PixelGrid />
       <Header />
-      <main>
+      <main style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
         <HeroSection />
-        <NavigationCards />
       </main>
-    </>
+    </div>
   );
 }

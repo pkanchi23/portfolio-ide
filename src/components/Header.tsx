@@ -42,10 +42,13 @@ export default function Header() {
                 transition: 'all var(--transition-base)',
             }}
         >
-            <div className="container" style={{
+            <div style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
+                width: '100%',
+                padding: '0 var(--space-6)',
+                maxWidth: '100%',
             }}>
                 {/* Logo */}
                 <Link href="/" style={{
